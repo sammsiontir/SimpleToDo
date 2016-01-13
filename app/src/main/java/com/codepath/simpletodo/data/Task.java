@@ -1,4 +1,4 @@
-package com.codepath.simpletodo;
+package com.codepath.simpletodo.data;
 
 import java.io.Serializable;
 import java.util.Calendar;

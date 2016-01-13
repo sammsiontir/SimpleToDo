@@ -1,4 +1,4 @@
-package com.codepath.simpletodo;
+package com.codepath.simpletodo.Activities;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,6 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.codepath.simpletodo.R;
+import com.codepath.simpletodo.data.Task;
+import com.codepath.simpletodo.adapter.TaskCursorAdapter;
+import com.codepath.simpletodo.helper.TodoItemDatabaseHandler;
 
 import java.util.List;
 

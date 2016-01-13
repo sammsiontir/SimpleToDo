@@ -1,10 +1,12 @@
-package com.codepath.simpletodo;
+package com.codepath.simpletodo.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.codepath.simpletodo.data.Task;
 
 import java.util.ArrayList;
 import java.util.List;
