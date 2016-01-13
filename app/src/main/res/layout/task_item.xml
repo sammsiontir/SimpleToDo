@@ -4,19 +4,29 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
     android:weightSum="1"
     android:baselineAligned="false">
-<TextView
-    android:id="@+id/tvBody"
-    android:layout_width="20dp"
-    android:layout_height="wrap_content"
-    android:text="Study cursors"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:layout_weight="0.80" />
-<TextView
-    android:id="@+id/tvPriority"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:text="High"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:layout_weight="0.24" />
+    <TextView
+        android:id="@+id/tvPriority"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="H"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_weight="0.07" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Task title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_weight="0.50" />
+
+    <TextView
+        android:id="@+id/tvDue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Feb 13 2015"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_weight="0.50" />
 </LinearLayout>

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -30,21 +32,27 @@ public class TaskCursorAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        TextView tvBody = (TextView) view.findViewById(R.id.tvBody);
+        TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         TextView tvPriority = (TextView) view.findViewById(R.id.tvPriority);
+        TextView tvDue = (TextView) view.findViewById(R.id.tvDue);
         // Extract properties from cursor
         Task task = TodoItemDatabaseHandler.cursorToTask(cursor);
         // Populate fields with extracted properties
-        tvBody.setText(task.getTitle());
-
+        // task.priority
         String priority = "";
         if(task.getPriority()==Task.HIGH_PRIORITY) {
-            priority = "High";
+            priority = "H";
         }
         if(task.getPriority()==Task.LOW_PRIORITY) {
-            priority = "Low";
+            priority = "L";
         }
         tvPriority.setText(priority);
+        // task.title
+        tvTitle.setText(task.getTitle());
+        // task.dueDate
+        Calendar dueDate = task.getDueDate();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        tvDue.setText(format.format(dueDate.getTime()));
     }
 
     public List<Task>  notifyDataSetChanged(TodoItemDatabaseHandler databaseHandler) {

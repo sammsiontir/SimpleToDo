@@ -48,16 +48,6 @@ public class MainActivity extends AppCompatActivity {
         lvViewAllTasks.setAdapter(taskAdapter);
 
         /*
-        // FIXME: display title only for now
-        items_title = new ArrayList<>();
-        for(Task i:items) {
-            items_title.add(i.getTitle());
-        }
-        // setup adapter for ListView
-        items_titleAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, items_title);
-        lvViewAllTasks.setAdapter(items_titleAdapter);
-        */
-        /*
          * For interact items
          */
         setupListViewListener();
