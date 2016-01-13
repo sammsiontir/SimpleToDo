@@ -1,5 +1,6 @@
 package com.codepath.simpletodo;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,18 +8,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    TodoItemDatabaseHandler databaseHandler;
     ListView lvViewAllTasks;
     List<Task> items;
-    ArrayList<String> items_title;
-    ArrayAdapter items_titleAdapter;
-    TodoItemDatabaseHandler databaseHandler;
+    Cursor taskCurSor;
+    TaskCursorAdapter taskAdapter;
+
 
 
     private final int REQUEST_EDITITEM = 20;
@@ -35,15 +35,19 @@ public class MainActivity extends AppCompatActivity {
         /*
          * For Database
          */
-        uid = 1;
+        uid = 8;
         databaseHandler = TodoItemDatabaseHandler.getInstance(this);
         // database = databaseHandler.getWritableDatabase();
         items = databaseHandler.getALLTasks();
-        //items = new ArrayList<>();
+        taskCurSor = databaseHandler.getALLTasksCursor();
         /*
          * For Layout Display
          */
         lvViewAllTasks = (ListView) findViewById(R.id.lvViewAllTasks);
+        taskAdapter = new TaskCursorAdapter(this, taskCurSor, 0);
+        lvViewAllTasks.setAdapter(taskAdapter);
+
+        /*
         // FIXME: display title only for now
         items_title = new ArrayList<>();
         for(Task i:items) {
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // setup adapter for ListView
         items_titleAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, items_title);
         lvViewAllTasks.setAdapter(items_titleAdapter);
-
+        */
         /*
          * For interact items
          */
@@ -66,8 +70,9 @@ public class MainActivity extends AppCompatActivity {
                 new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        items_title.remove(position);
-                        items_titleAdapter.notifyDataSetChanged();
+                        Task clickedTask = items.get(position);
+                        databaseHandler.deleteTask(clickedTask);
+                        items = taskAdapter.notifyDataSetChanged(databaseHandler);
                         return true;
                     }
                 }
@@ -123,11 +128,8 @@ public class MainActivity extends AppCompatActivity {
         newTask.setTitle(title);
         uid++;
 
-        items.add(newTask);
-        items_title.add(newTask.getTitle());
-        items_titleAdapter.notifyDataSetChanged();
-
         // update database
         databaseHandler.insertTask(newTask);
+        items = taskAdapter.notifyDataSetChanged(databaseHandler);
     }
 }

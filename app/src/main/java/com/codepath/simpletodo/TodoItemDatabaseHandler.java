@@ -128,6 +128,14 @@ public class TodoItemDatabaseHandler extends SQLiteOpenHelper {
         return tasks;
     }
 
+    public Cursor getALLTasksCursor(){
+        SQLiteDatabase database = getWritableDatabase();
+        return database.query(TABLE_TASKS,
+                allColumns,
+                null, null, null, null, null);
+    }
+
+
     public Task getTaskById(String taskId){
         SQLiteDatabase database = getWritableDatabase();
         Cursor cursor =  database.query(TABLE_TASKS,
@@ -136,7 +144,7 @@ public class TodoItemDatabaseHandler extends SQLiteOpenHelper {
         return cursorToTask(cursor);
     }
 
-    public Task cursorToTask(Cursor cursor) {
+    static public Task cursorToTask(Cursor cursor) {
         Task newTask = new Task();
         newTask.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
         newTask.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
