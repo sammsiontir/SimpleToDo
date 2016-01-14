@@ -1,5 +1,6 @@
 package com.codepath.simpletodo.Activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codepath.simpletodo.R;
-import com.codepath.simpletodo.data.Task;
 import com.codepath.simpletodo.adapter.TaskCursorAdapter;
+import com.codepath.simpletodo.data.Task;
 import com.codepath.simpletodo.helper.TodoItemDatabaseHandler;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         /*
          * For Database
          */
-        uid = 8;
+        uid = 0;
         databaseHandler = TodoItemDatabaseHandler.getInstance(this);
         // database = databaseHandler.getWritableDatabase();
         items = databaseHandler.getALLTasks();
@@ -90,6 +91,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_EDITITEM is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_EDITITEM) {
+
+        }
+        if (resultCode == RESULT_OK && requestCode == REQUEST_ADDITEM) {
+            Task newTask = (Task) data.getSerializableExtra("newTask");
+            databaseHandler.insertTask(newTask);
+            items = taskAdapter.notifyDataSetChanged(databaseHandler);
+        }
+    }
+
 
 
     @Override
@@ -117,14 +131,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickAddBotton(View view) {
         // FIXME: add a default task
-        Task newTask = new Task();
+        /*Task newTask = new Task();
         newTask.setId(uid);
         String title = "Task " + uid;
         newTask.setTitle(title);
         uid++;
-
-        // update database
-        databaseHandler.insertTask(newTask);
-        items = taskAdapter.notifyDataSetChanged(databaseHandler);
+        */
+        // call AddTaskActivity to edit new task
+        Intent AddTaskActivity = new Intent(MainActivity.this, AddTaskActivity.class);
+        startActivityForResult(AddTaskActivity, REQUEST_ADDITEM);
     }
 }

@@ -33,7 +33,7 @@ public class TodoItemDatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE =
             "create table " + TABLE_TASKS
                     + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY, "
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUMN_TITLE + " TEXT NOT NULL, "
                     + COLUMN_DUE_DATE + " INTEGER NOT NULL "
                     + COLUMN_PRIORITY + " TEXT NOT NULL "
@@ -92,7 +92,7 @@ public class TodoItemDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, newTask.getId());
+        //values.put(COLUMN_ID, newTask.getId());
         values.put(COLUMN_TITLE, newTask.getTitle());
         values.put(COLUMN_DUE_DATE, newTask.getDueDate().getTimeInMillis());
         values.put(COLUMN_PRIORITY, newTask.getPriority());
@@ -113,11 +113,7 @@ public class TodoItemDatabaseHandler extends SQLiteOpenHelper {
     }
 
     public List<Task> getALLTasks(){
-        SQLiteDatabase database = getWritableDatabase();
-        Cursor cursor =  database.query(TABLE_TASKS,
-                allColumns,
-                null, null, null, null, null);
-
+        Cursor cursor =  getALLTasksCursor();
         List<Task> tasks = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -134,13 +130,13 @@ public class TodoItemDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
         return database.query(TABLE_TASKS,
                 allColumns,
-                null, null, null, null, null);
+                null, null, null, null, COLUMN_PRIORITY + " ASC");
     }
 
 
     public Task getTaskById(String taskId){
         SQLiteDatabase database = getWritableDatabase();
-        Cursor cursor =  database.query(TABLE_TASKS,
+        Cursor cursor = database.query(TABLE_TASKS,
                 allColumns,
                 COLUMN_ID + " = '" + taskId + "'", null, null, null, null);
         return cursorToTask(cursor);
@@ -159,4 +155,5 @@ public class TodoItemDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
         database.delete(TABLE_TASKS, COLUMN_ID + " = '" + task.getId() + "'", null);
     }
+
 }
