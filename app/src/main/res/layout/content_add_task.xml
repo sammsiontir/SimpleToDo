@@ -67,7 +67,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/task_dueDate_label"
-                android:onClick="editDueDate"
                 android:id="@+id/tvDueDate" />
         </TableRow>
 
@@ -81,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvDate"
+                android:onClick="editDate"
                 android:layout_weight="0.05" />
         </TableRow>
 

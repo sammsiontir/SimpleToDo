@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.codepath.simpletodo.Fragment.DatePickerFragment;
 import com.codepath.simpletodo.R;
 import com.codepath.simpletodo.data.Task;
 
@@ -19,6 +20,7 @@ import java.util.Calendar;
 
 public class AddTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
+    private Calendar dueDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +30,9 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView tvDate = (TextView) findViewById(R.id.tvDate);
-        Calendar today = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        tvDate.setText(format.format(today.getTime()));
+        // Display sample due date
+        dueDate = Calendar.getInstance();
+        displayDueDate();
     }
 
     public void btnCancel(View view) {
@@ -43,15 +44,7 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         Task newTask = new Task();
         // collect data from EditText field
         newTask.setTitle(((EditText) findViewById(R.id.etTitle)).getText().toString());
-
-        // FIXME: use fragment to edit date
-        /*
-        DatePicker dpDueDate = (DatePicker) findViewById(R.id.dpDueDate);
-        newTask.getDueDate().set(Calendar.DATE, dpDueDate.getDayOfMonth());
-        newTask.getDueDate().set(Calendar.MONTH, dpDueDate.getMonth());
-        newTask.getDueDate().set(Calendar.YEAR, dpDueDate.getYear());
-        */
-
+        newTask.setDueDate(dueDate);
         Switch swPriority = (Switch) findViewById(R.id.swPriority);
         if(swPriority.isChecked()) {
             newTask.setPriority(Task.HIGH_PRIORITY);
@@ -74,13 +67,22 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // store the values selected into a Calendar instance
-        final Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, monthOfYear);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        dueDate.set(Calendar.YEAR, year);
+        dueDate.set(Calendar.MONTH, monthOfYear);
+        dueDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        displayDueDate();
     }
 
-    public void editDueDate(View view) {
-
+    public void displayDueDate() {
+        TextView tvDate = (TextView) findViewById(R.id.tvDate);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        tvDate.setText(format.format(dueDate.getTime()));
     }
+
+    public void editDate(View view) {
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
 }
