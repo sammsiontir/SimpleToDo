@@ -35,5 +35,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 Since I have no experience on database and java, it took me a while to be familiar with them.
-The most difficult part for me is using SQLite. I spent a whole night debugging it and found a typo in creating command. 
+The most difficult part for me is using SQLite. I spent a whole night debugging it and found a typo in creating command.
+It's always a good thing to learn new stuff, especially when you work in a boring company. 
+I have not finished this pre-work. I'm going to play with styles and UI in the next few days.
  
