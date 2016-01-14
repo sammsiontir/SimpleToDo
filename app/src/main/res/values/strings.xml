@@ -11,4 +11,10 @@
     <string name="task_save_label">SAVE</string>
     <string name="task_cancel_label">CANCEL</string>
     <string name="title_activity_edit_task">EditTaskActivity</string>
+
+    // For alert fragment
+    <string name="delete_alert_title">Delete task?</string>
+    <string name="delete_alert_delete">Delete</string>
+    <string name="delete_alert_cancel">Cancel</string>
+
 </resources>

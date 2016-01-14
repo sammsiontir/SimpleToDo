@@ -80,7 +80,7 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         // if task is not empty, pass task back to main activity
         if(!task.getTitle().isEmpty()) {
             Intent result = new Intent();
-            result.putExtra("newTask", task);
+            result.putExtra("Task", task);
             setResult(RESULT_OK, result);
         }
 
@@ -103,11 +103,11 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void editDate(View view) {
-        DatePickerFragment newFragment = new DatePickerFragment();
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("DueDate", task.getDueDate());
-        newFragment.setArguments(bundle);
-        newFragment.show(getFragmentManager(), "datePicker");
+        datePickerFragment.setArguments(bundle);
+        datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 
 }

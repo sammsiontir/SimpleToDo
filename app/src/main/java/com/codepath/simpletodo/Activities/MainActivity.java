@@ -1,5 +1,7 @@
 package com.codepath.simpletodo.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     List<Task> items;
     Cursor taskCurSor;
     TaskCursorAdapter taskAdapter;
+    Task selectTask;
 
 
 
@@ -57,16 +60,14 @@ public class MainActivity extends AppCompatActivity {
         setupListViewListener();
     }
 
-
     private void setupListViewListener() {
         // delete on long click
         lvViewAllTasks.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        Task clickedTask = items.get(position);
-                        databaseHandler.deleteTask(clickedTask);
-                        items = taskAdapter.notifyDataSetChanged(databaseHandler);
+                        selectTask = items.get(position);
+                        deleteTask();
                         return true;
                     }
                 }
@@ -92,12 +93,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_EDITITEM is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_EDITITEM) {
-            Task editTask = (Task) data.getSerializableExtra("newTask");
+            Task editTask = (Task) data.getSerializableExtra("Task");
             databaseHandler.updateTask(editTask);
             items = taskAdapter.notifyDataSetChanged(databaseHandler);
         }
         if (resultCode == RESULT_OK && requestCode == REQUEST_ADDITEM) {
-            Task newTask = (Task) data.getSerializableExtra("newTask");
+            Task newTask = (Task) data.getSerializableExtra("Task");
             databaseHandler.insertTask(newTask);
             items = taskAdapter.notifyDataSetChanged(databaseHandler);
         }
@@ -133,4 +134,29 @@ public class MainActivity extends AppCompatActivity {
         Intent AddTaskActivity = new Intent(MainActivity.this, AddTaskActivity.class);
         startActivityForResult(AddTaskActivity, REQUEST_ADDITEM);
     }
+
+
+    public void deleteTask(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(R.string.delete_alert_title)
+                .setNegativeButton(R.string.delete_alert_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked Cancel button
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(R.string.delete_alert_delete, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked Delete button
+                        databaseHandler.deleteTask(selectTask);
+                        items = taskAdapter.notifyDataSetChanged(databaseHandler);
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }
