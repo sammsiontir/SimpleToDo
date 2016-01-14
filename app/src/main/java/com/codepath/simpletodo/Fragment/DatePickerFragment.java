@@ -27,10 +27,10 @@ public class DatePickerFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        final Calendar dueDate = (Calendar) getArguments().getSerializable("DueDate");
+        int year = dueDate.get(Calendar.YEAR);
+        int month = dueDate.get(Calendar.MONTH);
+        int day = dueDate.get(Calendar.DAY_OF_MONTH);
 
         // Create a new instance of TimePickerDialog and return it
         // mActivity is the callback interface instance

@@ -20,7 +20,15 @@ import java.util.Calendar;
 
 public class AddTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    private Calendar dueDate;
+    private Task task;
+    private boolean MODE_EDIT;
+
+    private EditText etTitle;
+    private TextView tvDate;
+    private Switch swPriority;
+
+    private final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +38,28 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Display sample due date
-        dueDate = Calendar.getInstance();
-        displayDueDate();
+        // Catch passed data to tell if it's a new or edit task
+        MODE_EDIT = getIntent().getBooleanExtra("EDIT", false);
+        if(MODE_EDIT) task = (Task) getIntent().getSerializableExtra("Task");
+        else task = new Task();
+
+        // Get each editable field
+        etTitle = (EditText) findViewById(R.id.etTitle);
+        tvDate = (TextView) findViewById(R.id.tvDate);
+        swPriority = (Switch) findViewById(R.id.swPriority);
+        /*
+         * Display existing task item if in edit mode
+         * Display hint if in add mode
+         */
+        if(MODE_EDIT) {
+            etTitle.setText(task.getTitle());
+            displayDueDate();
+            swPriority.setChecked(task.getPriority()==Task.HIGH_PRIORITY);
+        }
+        else {
+            etTitle.setHint("Enter new task...");
+            displayDueDate();
+        }
     }
 
     public void btnCancel(View view) {
@@ -41,22 +68,19 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void btnSave(View view) {
-        Task newTask = new Task();
         // collect data from EditText field
-        newTask.setTitle(((EditText) findViewById(R.id.etTitle)).getText().toString());
-        newTask.setDueDate(dueDate);
-        Switch swPriority = (Switch) findViewById(R.id.swPriority);
+        task.setTitle(etTitle.getText().toString());
         if(swPriority.isChecked()) {
-            newTask.setPriority(Task.HIGH_PRIORITY);
+            task.setPriority(Task.HIGH_PRIORITY);
         }
         else {
-            newTask.setPriority(Task.LOW_PRIORITY);
+            task.setPriority(Task.LOW_PRIORITY);
         }
 
-        // if newTask is not empty, pass task back to main activity
-        if(!newTask.getTitle().isEmpty()) {
+        // if task is not empty, pass task back to main activity
+        if(!task.getTitle().isEmpty()) {
             Intent result = new Intent();
-            result.putExtra("newTask", newTask);
+            result.putExtra("newTask", task);
             setResult(RESULT_OK, result);
         }
 
@@ -67,21 +91,22 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // store the values selected into a Calendar instance
-        dueDate.set(Calendar.YEAR, year);
-        dueDate.set(Calendar.MONTH, monthOfYear);
-        dueDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        task.getDueDate().set(Calendar.YEAR, year);
+        task.getDueDate().set(Calendar.MONTH, monthOfYear);
+        task.getDueDate().set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
         displayDueDate();
     }
 
     public void displayDueDate() {
-        TextView tvDate = (TextView) findViewById(R.id.tvDate);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        tvDate.setText(format.format(dueDate.getTime()));
+        tvDate.setText(FORMAT.format(task.getDueDate().getTime()));
     }
 
     public void editDate(View view) {
         DatePickerFragment newFragment = new DatePickerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("DueDate", task.getDueDate());
+        newFragment.setArguments(bundle);
         newFragment.show(getFragmentManager(), "datePicker");
     }
 

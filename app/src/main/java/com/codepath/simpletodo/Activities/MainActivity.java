@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final int REQUEST_EDITITEM = 20;
     private final int REQUEST_ADDITEM = 21;
-    private int uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         /*
          * For Database
          */
-        uid = 0;
         databaseHandler = TodoItemDatabaseHandler.getInstance(this);
         // database = databaseHandler.getWritableDatabase();
         items = databaseHandler.getALLTasks();
@@ -75,19 +73,18 @@ public class MainActivity extends AppCompatActivity {
         );
 
         // jump to edit page on click
-        /*
         lvViewAllTasks.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent editActivity = new Intent(MainActivity.this, EditTaskActivity.class);
-                        editActivity.putExtra("todoItem", items.get(position));
-                        editActivity.putExtra("position", position);
-                        startActivityForResult(editActivity, REQUEST_EDITITEM);
+                        Intent EditTaskActivity = new Intent(MainActivity.this, AddTaskActivity.class);
+                        EditTaskActivity.putExtra("EDIT", true);
+                        EditTaskActivity.putExtra("Task", items.get(position));
+                        startActivityForResult(EditTaskActivity, REQUEST_EDITITEM);
                     }
                 }
         );
-        */
+
 
     }
 
@@ -95,7 +92,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_EDITITEM is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_EDITITEM) {
-
+            Task editTask = (Task) data.getSerializableExtra("newTask");
+            databaseHandler.updateTask(editTask);
+            items = taskAdapter.notifyDataSetChanged(databaseHandler);
         }
         if (resultCode == RESULT_OK && requestCode == REQUEST_ADDITEM) {
             Task newTask = (Task) data.getSerializableExtra("newTask");
@@ -130,13 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void clickAddBotton(View view) {
-        // FIXME: add a default task
-        /*Task newTask = new Task();
-        newTask.setId(uid);
-        String title = "Task " + uid;
-        newTask.setTitle(title);
-        uid++;
-        */
         // call AddTaskActivity to edit new task
         Intent AddTaskActivity = new Intent(MainActivity.this, AddTaskActivity.class);
         startActivityForResult(AddTaskActivity, REQUEST_ADDITEM);
