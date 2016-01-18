@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#FACC2E"
+    android:background="#D8D8D8"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Activities.AddTaskActivity"
     tools:showIn="@layout/activity_add_task">
@@ -138,37 +138,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.05">
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.05">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/task_save_label"
-                    android:id="@+id/btnSave"
-                    android:onClick="btnSave"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.05" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/task_cancel_label"
-                    android:id="@+id/btnCancel"
-                    android:onClick="btnCancel"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.05" />
-            </LinearLayout>
         </TableRow>
 
     </LinearLayout>

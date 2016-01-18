@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     TaskCursorAdapter taskAdapter;
     Task selectTask;
 
-
-
     private final int REQUEST_EDITITEM = 20;
     private final int REQUEST_ADDITEM = 21;
 
@@ -78,9 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        selectTask = items.get(position);
                         Intent EditTaskActivity = new Intent(MainActivity.this, AddTaskActivity.class);
                         EditTaskActivity.putExtra("EDIT", true);
-                        EditTaskActivity.putExtra("Task", items.get(position));
+                        EditTaskActivity.putExtra("Task", selectTask);
                         startActivityForResult(EditTaskActivity, REQUEST_EDITITEM);
                     }
                 }
@@ -93,9 +92,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_EDITITEM is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_EDITITEM) {
-            Task editTask = (Task) data.getSerializableExtra("Task");
-            databaseHandler.updateTask(editTask);
-            items = taskAdapter.notifyDataSetChanged(databaseHandler);
+            Boolean REQUEST_DELETEITEM = (Boolean) data.getBooleanExtra("REQUEST_DELETEITEM", false);
+            if(REQUEST_DELETEITEM) {
+                databaseHandler.deleteTask(selectTask);
+                items = taskAdapter.notifyDataSetChanged(databaseHandler);
+            }
+            else {
+                Task editTask = (Task) data.getSerializableExtra("Task");
+                databaseHandler.updateTask(editTask);
+                items = taskAdapter.notifyDataSetChanged(databaseHandler);
+            }
         }
         if (resultCode == RESULT_OK && requestCode == REQUEST_ADDITEM) {
             Task newTask = (Task) data.getSerializableExtra("Task");
@@ -129,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void deleteTask() {
+    private void deleteTask() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage(R.string.delete_alert_title)

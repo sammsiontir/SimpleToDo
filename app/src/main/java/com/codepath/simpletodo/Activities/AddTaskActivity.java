@@ -1,10 +1,14 @@
 package com.codepath.simpletodo.Activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -36,7 +40,7 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         // Catch passed data to tell if it's a new or edit task
@@ -72,32 +76,6 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         }
     }
 
-    public void btnCancel(View view) {
-        // Simply return to main activity
-        this.finish();
-    }
-
-    public void btnSave(View view) {
-        // collect data from EditText field
-        task.setTitle(etTitle.getText().toString());
-        if(swPriority.isChecked()) {
-            task.setPriority(Task.HIGH_PRIORITY);
-        }
-        else {
-            task.setPriority(Task.LOW_PRIORITY);
-        }
-
-        // if task is not empty, pass task back to main activity
-        if(!task.getTitle().isEmpty()) {
-            Intent result = new Intent();
-            result.putExtra("Task", task);
-            setResult(RESULT_OK, result);
-        }
-
-        // return to main activity
-        this.finish();
-    }
-
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // store the values selected into a Calendar instance
@@ -120,7 +98,6 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 
-
     public void swPriority(View view) {
         updateSwitchText();
     }
@@ -133,4 +110,93 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
             swPriority.setText("Low Priority?");
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(MODE_EDIT)
+            getMenuInflater().inflate(R.menu.menu_edit_task, menu);
+        else
+            getMenuInflater().inflate(R.menu.menu_add_task, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_save) {
+            btnSave();
+        }
+
+        if (id == R.id.action_cancel) {
+            btnCancel();
+        }
+
+        if (id == R.id.action_delete) {
+            deleteTask();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void btnCancel() {
+        // Simply return to main activity
+        this.finish();
+    }
+
+    private void btnSave() {
+        // collect data from EditText field
+        task.setTitle(etTitle.getText().toString());
+        if(swPriority.isChecked()) {
+            task.setPriority(Task.HIGH_PRIORITY);
+        }
+        else {
+            task.setPriority(Task.LOW_PRIORITY);
+        }
+
+        // if task is not empty, pass task back to main activity
+        if(!task.getTitle().isEmpty()) {
+            Intent result = new Intent();
+            result.putExtra("Task", task);
+            setResult(RESULT_OK, result);
+        }
+
+        // return to main activity
+        this.finish();
+    }
+
+    private void btnDelete() {
+        Intent result = new Intent();
+        result.putExtra("REQUEST_DELETEITEM", true);
+        setResult(RESULT_OK, result);
+        this.finish();
+    }
+
+    private void deleteTask() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(R.string.delete_alert_title)
+                .setNegativeButton(R.string.delete_alert_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked Cancel button
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(R.string.delete_alert_delete, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked Delete button
+                        btnDelete();
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }
