@@ -17,25 +17,25 @@ Time spent: 10 hours spent in total
 * [X] *(Suggested) Using custom adapter
 * [X] *(Suggested) Support due date and display within listview item
 * [X] *(Suggested) Support Priority and display within listview item 
-* [X] *(Suggested) Using dialog fragment for editing due date
+* [X] *(Suggested) Using dialog fragment for editing due date and delete warning 
 * [X] *(Suggested) Organized organize app files and folders based on the "Organizing your Source Files" website
 * [X] Ordered todo task by priority in listview 
-
-**Plan for the next few days**
-* [ ] Add style and improve as many UI as possible
-* [ ] Other improvements
+* [X] Add style and improve UI
+* [X] Use menu bottoms instead of creating new bottoms
+* [X] Avoid adding empty task
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
+* Add new item with bottom on the top right
+* Delete task by long click 
+* Edit task by single click
+* In edit mode, user can add, delete or cancel task
+* Avoid adding empty tasks
 
 <img src='https://github.com/sammsiontir/SimpleToDo/blob/master/SimpleToDo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
-Since I have no experience on database and java, it took me a while to be familiar with them.
-The most difficult part for me is using SQLite. I spent a whole night debugging it and found a typo in creating command.
-It's always a good thing to learn new stuff, especially when you work in a boring company. 
-I have not finished this pre-work. I'm going to play with styles and UI in the next few days.
- 
+The most difficult part for me is using java and SQLite, because I don't have any experience on them. After implement this ToDo app, I'm pretty sure I can pick up java and SQLite in a short period.
