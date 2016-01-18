@@ -38,10 +38,19 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         // Catch passed data to tell if it's a new or edit task
         MODE_EDIT = getIntent().getBooleanExtra("EDIT", false);
-        if(MODE_EDIT) task = (Task) getIntent().getSerializableExtra("Task");
-        else task = new Task();
+        String title = "";
+        if(MODE_EDIT) {
+            task = (Task) getIntent().getSerializableExtra("Task");
+            title = "Edit Task";
+        }
+        else {
+            task = new Task();
+            title = "Add New Task";
+        }
+        getSupportActionBar().setTitle(title);
 
         // Get each editable field
         etTitle = (EditText) findViewById(R.id.etTitle);
@@ -55,6 +64,7 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
             etTitle.setText(task.getTitle());
             displayDueDate();
             swPriority.setChecked(task.getPriority()==Task.HIGH_PRIORITY);
+            updateSwitchText();
         }
         else {
             etTitle.setHint("Enter new task...");
@@ -110,4 +120,17 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 
+
+    public void swPriority(View view) {
+        updateSwitchText();
+    }
+
+    private void updateSwitchText() {
+        if(swPriority.isChecked()) {
+            swPriority.setText("High Priority?");
+        }
+        else {
+            swPriority.setText("Low Priority?");
+        }
+    }
 }

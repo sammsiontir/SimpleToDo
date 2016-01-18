@@ -121,22 +121,15 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_add) {
+            Intent AddTaskActivity = new Intent(MainActivity.this, AddTaskActivity.class);
+            startActivityForResult(AddTaskActivity, REQUEST_ADDITEM);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void clickAddBotton(View view) {
-        // call AddTaskActivity to edit new task
-        Intent AddTaskActivity = new Intent(MainActivity.this, AddTaskActivity.class);
-        startActivityForResult(AddTaskActivity, REQUEST_ADDITEM);
-    }
-
-
-    public void deleteTask(){
+    public void deleteTask() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage(R.string.delete_alert_title)
@@ -158,5 +151,4 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 }

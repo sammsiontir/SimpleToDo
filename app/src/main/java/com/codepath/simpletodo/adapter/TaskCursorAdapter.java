@@ -2,6 +2,7 @@ package com.codepath.simpletodo.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,8 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.codepath.simpletodo.R;
-import com.codepath.simpletodo.helper.TodoItemDatabaseHandler;
 import com.codepath.simpletodo.data.Task;
+import com.codepath.simpletodo.helper.TodoItemDatabaseHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,16 +47,22 @@ public class TaskCursorAdapter extends CursorAdapter{
         String priority = "";
         if(task.getPriority()==Task.HIGH_PRIORITY) {
             priority = "H";
+            tvPriority.setTextColor(Color.parseColor("#FF4000"));
+            tvDue.setTextColor(Color.parseColor("#FF4000"));
+            tvTitle.setTextColor(Color.parseColor("#FF4000"));
         }
         if(task.getPriority()==Task.LOW_PRIORITY) {
             priority = "L";
+            tvPriority.setTextColor(Color.parseColor("#00BFFF"));
+            tvDue.setTextColor(Color.parseColor("#00BFFF"));
+            tvTitle.setTextColor(Color.parseColor("#00BFFF"));
         }
         tvPriority.setText(priority);
         // task.title
         tvTitle.setText(task.getTitle());
         // task.dueDate
         Calendar dueDate = task.getDueDate();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy");
         tvDue.setText(format.format(dueDate.getTime()));
     }
 
